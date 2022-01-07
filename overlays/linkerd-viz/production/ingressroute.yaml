@@ -1,0 +1,26 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: linkerd-viz-dashboard-auth
+spec:
+  basicAuth:
+    secret: linkerd-viz-dashboard-creds
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: linkerd-dashboard
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`linkerd.cryptocat.eu`)
+      services:
+        - name: web
+          port: 8084
+      middlewares:
+        - name: linkerd-viz-dashboard-auth

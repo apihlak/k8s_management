@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+namespace: harbor
+helmCharts:
+- name: harbor
+  includeCRDs: true
+  valuesInline:
+    externalURL: https://registry.cryptocat.eu
+    harborAdminPassword: Admin1Admin1
+    expose:
+      type: clusterIP
+      clusterIP:
+        name: harbor-web
+      tls:
+        enabled: false
+      updateStrategy:
+        type: Recreate
+  releaseName: harbor
+  version: 1.8.1
+  namespace: harbor
+  repo: https://helm.goharbor.io
+resources:
+  - namespace.yaml
+  - ingressroute.yaml

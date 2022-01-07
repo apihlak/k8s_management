@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metrics-server
+  namespace: argocd
+spec:
+  destination:
+    namespace: metrics-server
+    server: https://kubernetes.default.svc
+  project: production
+  source:
+    path: overlays/metrics-server/production
+    repoURL: https://gitlab.cryptocat.eu/cryptocat/core.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: linkerd-viz
+  namespace: argocd
+spec:
+  destination:
+    namespace: linkerd-viz
+    server: https://kubernetes.default.svc
+  project: production
+  source:
+    path: overlays/linkerd-viz/production
+    repoURL: https://gitlab.cryptocat.eu/cryptocat/core.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

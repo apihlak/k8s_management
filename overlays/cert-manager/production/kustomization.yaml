@@ -1,0 +1,43 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+namespace: cert-manager
+resources:
+  - https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.yaml
+  - sealed-secret.yaml
+  - clusterIssuer.yaml
+patchesJson6902:
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: Role
+      name: cert-manager:leaderelection
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: kube-system
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: Role
+      name: cert-manager-cainjector:leaderelection
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: kube-system
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: RoleBinding
+      name: cert-manager-cainjector:leaderelection
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: kube-system
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: RoleBinding
+      name: cert-manager:leaderelection
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: kube-system

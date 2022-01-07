@@ -1,0 +1,25 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: ServersTransport
+metadata:
+  name: rook-ceph-transport
+spec:
+  serverName: "rook.cryptocat.eu"
+  insecureSkipVerify: true
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: rook-ceph-dashboard
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`rook.cryptocat.eu`)
+      services:
+        - name: rook-ceph-mgr-dashboard
+          port: 8443
+          scheme: https
+          serversTransport: rook-ceph-transport

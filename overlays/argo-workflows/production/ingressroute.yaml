@@ -1,0 +1,25 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: ServersTransport
+metadata:
+  name: argo-transport
+spec:
+  serverName: "argo-workflows.cryptocat.eu"
+  insecureSkipVerify: true
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argo-server
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`argo-workflows.cryptocat.eu`)
+    kind: Rule
+    services:
+    - name: argo-server
+      port: 2746
+      scheme: https
+      serversTransport: argo-transport

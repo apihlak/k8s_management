@@ -1,0 +1,12 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: traefik-endpoint-cert
+spec:
+  commonName: "*.cryptocat.eu"
+  secretName: traefik-endpoint-cert
+  dnsNames: ['cryptocat.eu', '*.cryptocat.eu']
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

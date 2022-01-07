@@ -1,0 +1,28 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: traefik-dashboard-auth
+spec:
+  basicAuth:
+    secret: traefik-dashboard-creds
+    
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard-https
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`traefik.cryptocat.eu`)
+    kind: Rule
+    services:
+      - kind: TraefikService
+        name: api@internal
+    middlewares:
+      - name: traefik-dashboard-auth
+  tls:
+    secretName: traefik-endpoint-cert
